@@ -55,12 +55,16 @@ public class FXUtil {
         ctx.setFill(highlight);
 
         for (Range range : ranges) {
-            double x = skin.getCharacterBounds(range.start).getMinX();
-            double y = skin.getCharacterBounds(range.start).getMinY();
-            double width = skin.getCharacterBounds(range.end - 1).getMaxX() - x;
-            double height = skin.getCharacterBounds(range.end - 1).getMaxY() - y;
 
-            ctx.fillRect(x, y, width, height);
+            for (int i = range.start; i < range.end; i++) {
+                double x = skin.getCharacterBounds(i).getMinX();
+                double y = skin.getCharacterBounds(i).getMinY();
+                double width = skin.getCharacterBounds(i).getMaxX() - x;
+                double height = skin.getCharacterBounds(i).getMaxY() - y;
+
+                ctx.fillRect(x, y, width, height);
+            }
+
         }
     }
 
@@ -80,7 +84,7 @@ public class FXUtil {
     }
 
     private static List<Range> getSearchResult(String text, String regex) throws Exception {
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(text);
         List<Range> ranges = new ArrayList<>();
 
