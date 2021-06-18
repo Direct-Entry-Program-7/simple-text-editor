@@ -77,16 +77,33 @@ public class EditorFormController {
     }
 
     public void btnFindPrevious_OnAction(ActionEvent actionEvent) {
-        if (!searchList.isEmpty()) {
-            if (findOffset == -1) {
-                findOffset = searchList.size() - 1;
+//        if (!searchList.isEmpty()) {
+//            if (findOffset == -1) {
+//                findOffset = searchList.size() - 1;
+//            }
+//            txtEditor.selectRange(searchList.get(findOffset).startingIndex, searchList.get(findOffset).endIndex);
+//            findOffset--;
+//            if (findOffset < 0) {
+//                findOffset = searchList.size() - 1;
+//            }
+//        }
+
+        String pattern = new StringBuilder(txtSearch.getText()).reverse().toString();
+        String text = new StringBuilder(txtEditor.getText()).reverse().toString();
+
+        Pattern compile = Pattern.compile(pattern);
+        Matcher matcher = compile.matcher(text);
+
+            if (matcher.find(++findOffset)) {
+                findOffset = matcher.start();
+                txtEditor.selectRange(text.length() - matcher.end(), text.length() - matcher.start());
+
+                if (!matcher.find(findOffset +1)){
+                    findOffset = -1;
+                }
+
             }
-            txtEditor.selectRange(searchList.get(findOffset).startingIndex, searchList.get(findOffset).endIndex);
-            findOffset--;
-            if (findOffset < 0) {
-                findOffset = searchList.size() - 1;
-            }
-        }
+
     }
 }
 
