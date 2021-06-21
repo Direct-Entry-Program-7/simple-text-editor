@@ -64,7 +64,6 @@ public class FXUtil {
 
                 ctx.fillRect(x, y, width, height);
             }
-
         }
     }
 
@@ -84,7 +83,7 @@ public class FXUtil {
     }
 
     private static List<Range> getSearchResult(String text, String regex) throws Exception {
-        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(text);
         List<Range> ranges = new ArrayList<>();
 

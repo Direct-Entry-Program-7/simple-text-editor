@@ -97,5 +97,15 @@
             <Button layoutX="265.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnFindPrevious_OnAction" prefHeight="26.0" prefWidth="41.0" text="↑" />
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="pneReplace" layoutX="338.0" layoutY="10.0" prefHeight="89.0" prefWidth="314.0" style="-fx-background-color: gray;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <TextField fx:id="txtSearch1" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="203.0" />
+            <Button layoutX="224.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnFindNext_OnAction" prefHeight="26.0" prefWidth="41.0" text="↓" />
+            <Button layoutX="265.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnFindPrevious_OnAction" prefHeight="26.0" prefWidth="41.0" text="↑" />
+            <TextField fx:id="txtReplace" layoutX="14.0" layoutY="47.0" prefHeight="26.0" prefWidth="203.0" />
+            <Button layoutX="224.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnReplace_OnAction" prefHeight="26.0" prefWidth="41.0" text="R" />
+            <Button layoutX="265.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnReplaceAll_OnAction" prefHeight="26.0" prefWidth="41.0" text="RA" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
