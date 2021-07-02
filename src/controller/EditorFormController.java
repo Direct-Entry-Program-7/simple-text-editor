@@ -1,20 +1,20 @@
 package controller;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import util.FXUtil;
 
-import java.awt.event.TextListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -41,8 +41,8 @@ public class EditorFormController {
         txtSearch1.textProperty().addListener(textListener);
     }
 
-    private void searchMatches(String query){
-        FXUtil.highlightOnTextArea(txtEditor,query, Color.web("yellow", 0.8));
+    private void searchMatches(String query) {
+        FXUtil.highlightOnTextArea(txtEditor, query, Color.web("yellow", 0.8));
 
         try {
             Pattern regExp = Pattern.compile(query);
@@ -54,7 +54,7 @@ public class EditorFormController {
                 searchList.add(new Index(matcher.start(), matcher.end()));
             }
 
-            if (searchList.isEmpty()){
+            if (searchList.isEmpty()) {
                 findOffset = -1;
             }
         } catch (PatternSyntaxException e) {
@@ -72,7 +72,7 @@ public class EditorFormController {
 
     public void mnuItemFind_OnAction(ActionEvent actionEvent) {
         findOffset = -1;
-        if (pneReplace.isVisible()){
+        if (pneReplace.isVisible()) {
             pneReplace.setVisible(false);
         }
         pneFind.setVisible(true);
@@ -81,7 +81,7 @@ public class EditorFormController {
 
     public void mnuItemReplace_OnAction(ActionEvent actionEvent) {
         findOffset = -1;
-        if (pneFind.isVisible()){
+        if (pneFind.isVisible()) {
             pneFind.setVisible(false);
         }
         pneReplace.setVisible(true);
@@ -126,10 +126,10 @@ public class EditorFormController {
 //            i=-1;
 //        }
 
-            while (!searchList.isEmpty()) {
-                txtEditor.replaceText(searchList.get(0).startingIndex, searchList.get(0).endIndex, txtReplace.getText());
-                searchMatches(txtSearch1.getText());
-            }
+        while (!searchList.isEmpty()) {
+            txtEditor.replaceText(searchList.get(0).startingIndex, searchList.get(0).endIndex, txtReplace.getText());
+            searchMatches(txtSearch1.getText());
+        }
     }
 
     public void btnReplace_OnAction(ActionEvent actionEvent) {
@@ -138,6 +138,32 @@ public class EditorFormController {
         searchMatches(txtSearch1.getText());
     }
 
+    public void mnuFileOpen_OnAction(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open File");
+        fileChooser.getExtensionFilters().add
+                (new FileChooser.ExtensionFilter("All Text Files", "*.txt", "*.html"));
+        fileChooser.getExtensionFilters().add
+                (new FileChooser.ExtensionFilter("All Files", "*"));
+        File file = fileChooser.showOpenDialog(txtEditor.getScene().getWindow());
+
+        if (file == null) return;
+
+        txtEditor.clear();
+        try (FileReader fileReader = new FileReader(file);
+             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null){
+                txtEditor.appendText(line + '\n');
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }
 
 class Index {
